@@ -220,15 +220,21 @@ export default function HeroSection() {
 
       {/* RIGHT — ROLE */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", paddingLeft: "3rem", paddingRight: "5rem", position: "relative", zIndex: 2, gap: "1.4rem" }}>
+        {/* Open to work badge */}
+        <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
+          style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.3rem 0.9rem", border: "1px solid rgba(0,221,240,0.25)", background: "rgba(0,221,240,0.06)" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#00ddff", boxShadow: "0 0 6px #00ddff", animation: "statusBlink 2.4s ease-in-out infinite", display: "inline-block" }} />
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.62rem", color: "#00ddff", letterSpacing: "0.15em", textTransform: "uppercase" }}>Open to Work</span>
+        </motion.div>
         <WordSlide text="Full Stack Developer" from="right" delay={0.5} className="hero-role-text" />
-        <motion.p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.78rem", color: "#8494ae", lineHeight: 1.9, maxWidth: 340 }}
+        <motion.p style={{ fontFamily: "'Syne', sans-serif", fontSize: "0.95rem", fontWeight: 700, color: "#dfe4ed", lineHeight: 1.7, maxWidth: 340 }}
           initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.2, duration: 0.7 }}>
           React + Django · I build real-world web applications for businesses and practical use cases.
         </motion.p>
         <motion.div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
           initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
           {["React · TypeScript", "Django · Python", "VPS · Nginx"].map((t) => (
-            <div key={t} style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#3a5060", letterSpacing: "0.06em" }}>
+            <div key={t} style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontFamily: "'Syne', sans-serif", fontSize: "0.78rem", fontWeight: 700, color: "#dfe4ed", letterSpacing: "0.02em" }}>
               <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#00ddff", flexShrink: 0, boxShadow: "0 0 6px #00ddff" }} />
               {t}
             </div>
