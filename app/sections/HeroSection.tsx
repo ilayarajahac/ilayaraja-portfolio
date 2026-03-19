@@ -106,14 +106,14 @@ function ParticleRing() {
   )
 }
 
-function Scene({ beamReady, mouse, isMobile }: { beamReady: boolean; mouse: React.MutableRefObject<{ x: number; y: number }>; isMobile: boolean }) {
+function Scene({ beamReady, mouse }: { beamReady: boolean; mouse: React.MutableRefObject<{ x: number; y: number }> }) {
   return (
     <>
       <ambientLight intensity={0.6} />
-      <directionalLight position={[3, 5, 4]}  intensity={1.8} color="#cce8ff" castShadow={!isMobile} />
+      <directionalLight position={[3, 5, 4]}  intensity={1.8} color="#cce8ff" castShadow />
       <directionalLight position={[-4, 3, -2]} intensity={0.6} color="#7c6fff" />
       <directionalLight position={[0, 3, -5]}  intensity={0.6} color="#00ddff" />
-      <spotLight position={[0, 7, 0]} intensity={beamReady ? 6 : 0} color="#00ddff" angle={0.18} penumbra={0.7} distance={12} castShadow={!isMobile} />
+      <spotLight position={[0, 7, 0]} intensity={beamReady ? 6 : 0} color="#00ddff" angle={0.18} penumbra={0.7} distance={12} castShadow />
       <pointLight position={[0, 1, 1.5]} intensity={1.2} color="#00bbdd" distance={6} />
       <Suspense fallback={null}>
         <Float speed={1.2} rotationIntensity={0.08} floatIntensity={0.12}>
@@ -122,8 +122,8 @@ function Scene({ beamReady, mouse, isMobile }: { beamReady: boolean; mouse: Reac
       </Suspense>
       <LightBeam active={beamReady} />
       <FloorGlow />
-      {!isMobile && <ParticleRing />}
-      {!isMobile && <ContactShadows position={[0, 0, 0]} opacity={0.5} scale={4} blur={2.5} color="#001a22" />}
+      <ParticleRing />
+      <ContactShadows position={[0, 0, 0]} opacity={0.5} scale={4} blur={2.5} color="#001a22" />
       <OrbitControls enableZoom={false} enablePan={false}
         target={[0, 0.9, 0]}
         minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2}
@@ -154,11 +154,9 @@ function WordSlide({ text, from, delay = 0, className = "" }: { text: string; fr
 export default function HeroSection() {
   const lineRef = useRef<HTMLDivElement>(null)
   const [beamReady, setBeamReady] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const mouse = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768)
     const el = lineRef.current
     if (el) {
       gsap.timeline({ delay: 1.4 }).fromTo(el,
@@ -199,23 +197,21 @@ export default function HeroSection() {
         </motion.p>
       </div>
 
-      {/* CENTER — hide canvas on mobile, show only on desktop */}
+      {/* CENTER — 3D canvas */}
       <div style={{
         position: "relative",
         zIndex: 2,
         width: "min(500px, 44vw)",
         height: "100svh",
-      }} className="hero-canvas-col">
-        {!isMobile && (
-          <Canvas
-            camera={{ position: [0, 1.8, 5.5], fov: 44 }}
-            gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1, outputColorSpace: THREE.SRGBColorSpace }}
-            shadows
-            style={{ background: "transparent", width: "100%", height: "100%" }}
-          >
-            <Scene beamReady={beamReady} mouse={mouse} isMobile={isMobile} />
-          </Canvas>
-        )}
+      }}>
+        <Canvas
+          camera={{ position: [0, 1.8, 5.5], fov: 44 }}
+          gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1, outputColorSpace: THREE.SRGBColorSpace }}
+          shadows
+          style={{ background: "transparent", width: "100%", height: "100%" }}
+        >
+          <Scene beamReady={beamReady} mouse={mouse} />
+        </Canvas>
         <motion.p style={{ position: "absolute", bottom: "2rem", left: "50%", transform: "translateX(-50%)", fontFamily: "'DM Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#2a3a45", whiteSpace: "nowrap" }}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2, duration: 0.6 }}>
           ↺ drag to rotate
@@ -262,7 +258,6 @@ export default function HeroSection() {
           .hero-role-text { text-align: center; }
           section > div:first-of-type { padding: 0 !important; align-items: center !important; }
           section > div:last-of-type  { padding: 0 !important; align-items: center !important; }
-          .hero-canvas-col { display: none !important; }
         }
         @media (max-width: 480px) {
           .hero-name-text { font-size: clamp(2rem, 12vw, 3rem) !important; }
