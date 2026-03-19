@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, Suspense } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { useGLTF, Float, ContactShadows, OrbitControls } from "@react-three/drei"
 import * as THREE from "three"
@@ -37,9 +37,11 @@ function FloorGlow() {
   )
 }
 
-function AvatarModel() {
+function AvatarModel({ mouse }: { mouse: React.MutableRefObject<{ x: number; y: number }> }) {
   const { scene, animations } = useGLTF("/models/avatar.glb")
   const mixer = useRef<THREE.AnimationMixer | null>(null)
+  const headBone = useRef<THREE.Object3D | null>(null)
+  const neckBone = useRef<THREE.Object3D | null>(null)
   const ready = useRef(false)
 
   if (!ready.current) {
@@ -49,6 +51,9 @@ function AvatarModel() {
     scene.position.set(-center.x, -box.min.y, -center.z)
     scene.rotation.y = 0.15
     scene.traverse((child) => {
+      const nameLower = child.name.toLowerCase()
+      if (nameLower.includes("head") && !headBone.current) headBone.current = child
+      if (nameLower.includes("neck") && !neckBone.current) neckBone.current = child
       const mesh = child as THREE.Mesh
       if (!mesh.isMesh) return
       mesh.castShadow = true; mesh.receiveShadow = true
@@ -62,7 +67,19 @@ function AvatarModel() {
     }
   }
 
-  useFrame((_, delta) => { mixer.current?.update(delta) })
+  useFrame((_, delta) => {
+    mixer.current?.update(delta)
+    const tx = -mouse.current.y * 0.35
+    const ty =  mouse.current.x * 0.45
+    if (headBone.current) {
+      headBone.current.rotation.x = THREE.MathUtils.lerp(headBone.current.rotation.x, tx, 0.08)
+      headBone.current.rotation.y = THREE.MathUtils.lerp(headBone.current.rotation.y, ty, 0.08)
+    }
+    if (neckBone.current) {
+      neckBone.current.rotation.x = THREE.MathUtils.lerp(neckBone.current.rotation.x, tx * 0.4, 0.06)
+      neckBone.current.rotation.y = THREE.MathUtils.lerp(neckBone.current.rotation.y, ty * 0.4, 0.06)
+    }
+  })
   return <group><primitive object={scene} /></group>
 }
 
@@ -89,22 +106,24 @@ function ParticleRing() {
   )
 }
 
-function Scene({ beamReady }: { beamReady: boolean }) {
+function Scene({ beamReady, mouse, isMobile }: { beamReady: boolean; mouse: React.MutableRefObject<{ x: number; y: number }>; isMobile: boolean }) {
   return (
     <>
       <ambientLight intensity={0.6} />
-      <directionalLight position={[3, 5, 4]}  intensity={1.8} color="#cce8ff" castShadow />
+      <directionalLight position={[3, 5, 4]}  intensity={1.8} color="#cce8ff" castShadow={!isMobile} />
       <directionalLight position={[-4, 3, -2]} intensity={0.6} color="#7c6fff" />
       <directionalLight position={[0, 3, -5]}  intensity={0.6} color="#00ddff" />
-      <spotLight position={[0, 7, 0]} intensity={beamReady ? 6 : 0} color="#00ddff" angle={0.18} penumbra={0.7} distance={12} castShadow />
+      <spotLight position={[0, 7, 0]} intensity={beamReady ? 6 : 0} color="#00ddff" angle={0.18} penumbra={0.7} distance={12} castShadow={!isMobile} />
       <pointLight position={[0, 1, 1.5]} intensity={1.2} color="#00bbdd" distance={6} />
-      <Float speed={1.2} rotationIntensity={0.08} floatIntensity={0.12}>
-        <AvatarModel />
-      </Float>
+      <Suspense fallback={null}>
+        <Float speed={1.2} rotationIntensity={0.08} floatIntensity={0.12}>
+          <AvatarModel mouse={mouse} />
+        </Float>
+      </Suspense>
       <LightBeam active={beamReady} />
       <FloorGlow />
-      <ParticleRing />
-      <ContactShadows position={[0, 0, 0]} opacity={0.5} scale={4} blur={2.5} color="#001a22" />
+      {!isMobile && <ParticleRing />}
+      {!isMobile && <ContactShadows position={[0, 0, 0]} opacity={0.5} scale={4} blur={2.5} color="#001a22" />}
       <OrbitControls enableZoom={false} enablePan={false}
         target={[0, 0.9, 0]}
         minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2}
@@ -135,8 +154,11 @@ function WordSlide({ text, from, delay = 0, className = "" }: { text: string; fr
 export default function HeroSection() {
   const lineRef = useRef<HTMLDivElement>(null)
   const [beamReady, setBeamReady] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const mouse = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 768)
     const el = lineRef.current
     if (el) {
       gsap.timeline({ delay: 1.4 }).fromTo(el,
@@ -145,7 +167,12 @@ export default function HeroSection() {
       )
     }
     const t = setTimeout(() => setBeamReady(true), 800)
-    return () => clearTimeout(t)
+    const onMove = (e: MouseEvent) => {
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1
+      mouse.current.y = (e.clientY / window.innerHeight) * 2 - 1
+    }
+    window.addEventListener("mousemove", onMove)
+    return () => { clearTimeout(t); window.removeEventListener("mousemove", onMove) }
   }, [])
 
   return (
@@ -185,7 +212,7 @@ export default function HeroSection() {
           shadows
           style={{ background: "transparent", width: "100%", height: "100%" }}
         >
-          <Scene beamReady={beamReady} />
+          <Scene beamReady={beamReady} mouse={mouse} isMobile={isMobile} />
         </Canvas>
         <motion.p style={{ position: "absolute", bottom: "2rem", left: "50%", transform: "translateX(-50%)", fontFamily: "'DM Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#2a3a45", whiteSpace: "nowrap" }}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2, duration: 0.6 }}>
