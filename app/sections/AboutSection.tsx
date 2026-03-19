@@ -166,10 +166,10 @@ export default function AboutSection() {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT — 3D character, full height */}
+          {/* RIGHT — 3D character, desktop only */}
           <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            style={{ position: "relative", height: 620 }}>
+            style={{ position: "relative", height: 620 }} className="about-canvas-col">
 
             <div style={{ position: "absolute", inset: "10%", background: "radial-gradient(ellipse, rgba(0,180,220,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
 
@@ -215,14 +215,12 @@ export default function AboutSection() {
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
           #about { padding: 4rem 1.5rem !important; }
           #about > div > div:nth-child(3) { grid-template-columns: 1fr !important; }
-          #about > div > div:nth-child(3) > div:last-child { display: none; }
         }
         @media (max-width: 480px) {
           #about { padding: 3rem 1rem !important; }
-          #about > div > div:nth-child(3) > div:first-child > div:nth-child(2) { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>

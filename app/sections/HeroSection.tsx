@@ -199,21 +199,23 @@ export default function HeroSection() {
         </motion.p>
       </div>
 
-      {/* CENTER — full viewport height canvas */}
+      {/* CENTER — hide canvas on mobile, show only on desktop */}
       <div style={{
         position: "relative",
         zIndex: 2,
         width: "min(500px, 44vw)",
-        height: "100svh",  /* ← full screen height = never clips head or feet */
-      }}>
-        <Canvas
-          camera={{ position: [0, 1.8, 5.5], fov: 44 }}
-          gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1, outputColorSpace: THREE.SRGBColorSpace }}
-          shadows
-          style={{ background: "transparent", width: "100%", height: "100%" }}
-        >
-          <Scene beamReady={beamReady} mouse={mouse} isMobile={isMobile} />
-        </Canvas>
+        height: "100svh",
+      }} className="hero-canvas-col">
+        {!isMobile && (
+          <Canvas
+            camera={{ position: [0, 1.8, 5.5], fov: 44 }}
+            gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1, outputColorSpace: THREE.SRGBColorSpace }}
+            shadows
+            style={{ background: "transparent", width: "100%", height: "100%" }}
+          >
+            <Scene beamReady={beamReady} mouse={mouse} isMobile={isMobile} />
+          </Canvas>
+        )}
         <motion.p style={{ position: "absolute", bottom: "2rem", left: "50%", transform: "translateX(-50%)", fontFamily: "'DM Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#2a3a45", whiteSpace: "nowrap" }}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2, duration: 0.6 }}>
           ↺ drag to rotate
@@ -254,17 +256,17 @@ export default function HeroSection() {
       <style>{`
         .hero-name-text { font-family: 'Syne', sans-serif !important; font-weight: 800; font-size: clamp(3rem, 5vw, 5.5rem); letter-spacing: -0.03em; line-height: 0.95; color: #dfe4ed; text-align: right; }
         .hero-role-text { font-family: 'Syne', sans-serif !important; font-weight: 700; font-size: clamp(1.4rem, 2.5vw, 2.2rem); letter-spacing: -0.02em; line-height: 1.1; background: linear-gradient(135deg, #00ddff 0%, #7c6fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
           section { grid-template-columns: 1fr !important; grid-template-rows: auto auto auto; padding: 5rem 1.5rem 3rem; gap: 1rem; }
           .hero-name-text { text-align: center !important; font-size: clamp(2.4rem, 10vw, 4rem) !important; }
           .hero-role-text { text-align: center; }
           section > div:first-of-type { padding: 0 !important; align-items: center !important; }
           section > div:last-of-type  { padding: 0 !important; align-items: center !important; }
+          .hero-canvas-col { display: none !important; }
         }
         @media (max-width: 480px) {
           .hero-name-text { font-size: clamp(2rem, 12vw, 3rem) !important; }
           .hero-role-text { font-size: clamp(1rem, 5vw, 1.4rem) !important; }
-          section > div:nth-child(2) { width: 100vw !important; height: 60vw !important; min-height: 260px; }
         }
       `}</style>
     </section>
