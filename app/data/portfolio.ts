@@ -95,8 +95,8 @@ export const portfolioData = {
   ],
 
   contact: {
-    email: "ilayaraja@example.com",
-    github: "https://github.com/ilayaraja",
-    linkedin: "https://linkedin.com/in/ilayaraja"
+    email: "ilaiarajacse@gmail.com",
+    github: "https://github.com/ilayarajahac",
+    whatsapp: "https://wa.me/919080849708"
   }
 }

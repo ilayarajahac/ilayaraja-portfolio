@@ -168,7 +168,7 @@ export default function HeroSection() {
         <div ref={lineRef} style={{ height: "2px", width: "100%", background: "linear-gradient(90deg, transparent, #00ddff)", marginTop: "0.4rem", transform: "scaleX(0)" }} />
         <motion.p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#3a5060", marginTop: "0.8rem", textAlign: "right" }}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 0.6 }}>
-          Portfolio 2025
+          Portfolio 2026
         </motion.p>
       </div>
 

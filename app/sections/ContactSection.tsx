@@ -35,9 +35,9 @@ export default function ContactSection() {
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
           style={{ display: "flex", justifyContent: "center", gap: "1px", background: "rgba(255,255,255,0.04)", marginBottom: "1px" }}>
           {[
-            { label: "Email Me",  href: `mailto:${portfolioData.contact.email}`,  accent: "#00ddff" },
-            { label: "GitHub",    href: portfolioData.contact.github,              accent: "#7c6fff" },
-            { label: "LinkedIn",  href: portfolioData.contact.linkedin,            accent: "#00ddff" },
+            { label: "Email Me",  href: `mailto:${portfolioData.contact.email}`,    accent: "#00ddff" },
+            { label: "GitHub",    href: portfolioData.contact.github,                accent: "#7c6fff" },
+            { label: "WhatsApp",  href: portfolioData.contact.whatsapp,              accent: "#00ddff" },
           ].map(({ label, href, accent }) => (
             <motion.a key={label} variants={fadeUp} href={href} target="_blank" rel="noopener noreferrer"
               onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = `rgba(${accent === "#00ddff" ? "0,221,240" : "124,111,255"},0.06)`; (e.currentTarget as HTMLAnchorElement).style.color = accent }}
@@ -70,7 +70,7 @@ export default function ContactSection() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
           style={{ textAlign: "center", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
           <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", color: "#3a5060", letterSpacing: "0.1em" }}>
-            © 2025 <span style={{ color: "#00ddff" }}>Ilayaraja</span> · Built with Next.js · Three.js · TypeScript
+            © 2026 <span style={{ color: "#00ddff" }}>Ilayaraja</span> · Built with Next.js · Three.js · TypeScript
           </p>
         </motion.div>
 

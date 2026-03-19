@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, Suspense } from "react"
+import { useRef, Suspense, useEffect } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { useGLTF, useAnimations, Environment } from "@react-three/drei"
 import * as THREE from "three"
@@ -16,19 +16,14 @@ function AboutAvatar() {
   const { scene, animations } = useGLTF("/models/avatar1.glb")
   const { actions } = useAnimations(animations, group)
   const ready = useRef(false)
-  const animStarted = useRef(false)
 
-  // Setup once — ref guard prevents re-runs
+  // Position/material setup — sync is fine here (no DOM needed)
   if (!ready.current) {
     ready.current = true
-
     const box = new THREE.Box3().setFromObject(scene)
     const center = box.getCenter(new THREE.Vector3())
-
-    // Feet at y=0, centered x/z
     scene.position.set(-center.x, -box.min.y, -center.z)
     scene.rotation.y = -0.25
-
     scene.traverse((child: any) => {
       if (!child.isMesh) return
       child.castShadow = true
@@ -44,25 +39,16 @@ function AboutAvatar() {
     })
   }
 
-  // Start animation as soon as actions are ready — also guarded
-  if (actions && !animStarted.current) {
-    const keys = Object.keys(actions)
-    if (keys.length > 0) {
-      animStarted.current = true
-      // Try common animation names, fallback to first available
-      const anim =
-        actions["idle"] ||
-        actions["Idle"] ||
-        actions["Armature|mixamo.com|Layer0"] ||
-        actions["mixamo.com"] ||
-        actions[keys[0]]
-      if (anim) {
-        anim.reset()
-        anim.fadeIn(0.3)
-        anim.play()
-      }
+  // ✅ useEffect — runs AFTER mount, group.current is valid, mixer is bound
+  useEffect(() => {
+    // avatar1.glb has animation named "mixamo.com"
+    const anim = actions["mixamo.com"] ?? Object.values(actions)[0]
+    if (anim) {
+      anim.reset()
+      anim.fadeIn(0.3)
+      anim.play()
     }
-  }
+  }, [actions])
 
   useFrame(({ clock }) => {
     if (!group.current) return
