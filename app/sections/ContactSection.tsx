@@ -37,6 +37,7 @@ export default function ContactSection() {
           {[
             { label: "Email Me",  href: `mailto:${portfolioData.contact.email}`,    accent: "#00ddff" },
             { label: "GitHub",    href: portfolioData.contact.github,                accent: "#7c6fff" },
+            { label: "LinkedIn",  href: portfolioData.contact.linkedin,              accent: "#00ddff" },
             { label: "WhatsApp",  href: portfolioData.contact.whatsapp,              accent: "#00ddff" },
           ].map(({ label, href, accent }) => (
             <motion.a key={label} variants={fadeUp} href={href} target="_blank" rel="noopener noreferrer"
