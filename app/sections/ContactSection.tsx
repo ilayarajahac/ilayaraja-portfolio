@@ -82,6 +82,10 @@ export default function ContactSection() {
           #contact > div > div:nth-child(3) { flex-direction: column !important; }
           #contact > div > div:nth-child(4) { grid-template-columns: 1fr !important; }
         }
+        @media (max-width: 480px) {
+          #contact { padding: 3rem 1rem !important; }
+          #contact > div > div:nth-child(3) > a { padding: 1.5rem 1rem !important; }
+        }
       `}</style>
     </section>
   )

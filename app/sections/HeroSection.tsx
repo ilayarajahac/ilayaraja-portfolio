@@ -234,6 +234,11 @@ export default function HeroSection() {
           section > div:first-of-type { padding: 0 !important; align-items: center !important; }
           section > div:last-of-type  { padding: 0 !important; align-items: center !important; }
         }
+        @media (max-width: 480px) {
+          .hero-name-text { font-size: clamp(2rem, 12vw, 3rem) !important; }
+          .hero-role-text { font-size: clamp(1rem, 5vw, 1.4rem) !important; }
+          section > div:nth-child(2) { width: 100vw !important; height: 60vw !important; min-height: 260px; }
+        }
       `}</style>
     </section>
   )

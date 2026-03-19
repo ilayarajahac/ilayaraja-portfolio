@@ -220,6 +220,10 @@ export default function AboutSection() {
           #about > div > div:nth-child(3) { grid-template-columns: 1fr !important; }
           #about > div > div:nth-child(3) > div:last-child { display: none; }
         }
+        @media (max-width: 480px) {
+          #about { padding: 3rem 1rem !important; }
+          #about > div > div:nth-child(3) > div:first-child > div:nth-child(2) { grid-template-columns: 1fr !important; }
+        }
       `}</style>
     </section>
   )

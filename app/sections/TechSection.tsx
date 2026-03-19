@@ -73,6 +73,9 @@ export default function TechSection() {
           #skills { padding: 4rem 1.5rem !important; }
           #skills > div > div:nth-child(3) { grid-template-columns: 1fr !important; }
         }
+        @media (max-width: 480px) {
+          #skills { padding: 3rem 1rem !important; }
+        }
       `}</style>
     </section>
   )

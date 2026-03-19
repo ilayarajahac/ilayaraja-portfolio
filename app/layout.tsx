@@ -12,6 +12,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
   title: "Ilayaraja - Full Stack Developer",
   description: "Full Stack Developer specializing in React, TypeScript, and Django. Building scalable business applications.",

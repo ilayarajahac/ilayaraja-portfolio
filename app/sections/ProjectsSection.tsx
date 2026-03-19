@@ -97,6 +97,10 @@ export default function ProjectsSection() {
         @media (max-width: 900px) {
           #projects { padding: 4rem 1.5rem !important; }
         }
+        @media (max-width: 480px) {
+          #projects { padding: 3rem 1rem !important; }
+          #projects > div > div:nth-child(3) > div > div:nth-child(4) { grid-template-columns: 1fr !important; }
+        }
       `}</style>
     </section>
   )
