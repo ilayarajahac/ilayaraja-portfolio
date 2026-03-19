@@ -219,24 +219,34 @@ export default function HeroSection() {
       </div>
 
       {/* RIGHT — ROLE */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", paddingLeft: "3rem", paddingRight: "5rem", position: "relative", zIndex: 2, gap: "1.8rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", paddingLeft: "3rem", paddingRight: "5rem", position: "relative", zIndex: 2, gap: "1.4rem" }}>
         <WordSlide text="Full Stack Developer" from="right" delay={0.5} className="hero-role-text" />
+        <motion.p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.78rem", color: "#8494ae", lineHeight: 1.9, maxWidth: 340 }}
+          initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.2, duration: 0.7 }}>
+          React + Django · I build real-world web applications for businesses and practical use cases.
+        </motion.p>
         <motion.div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
           initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-          {["React · TypeScript", "Django · Python", "VPS · Nginx", "Three.js · GSAP"].map((t) => (
+          {["React · TypeScript", "Django · Python", "VPS · Nginx"].map((t) => (
             <div key={t} style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#3a5060", letterSpacing: "0.06em" }}>
               <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#00ddff", flexShrink: 0, boxShadow: "0 0 6px #00ddff" }} />
               {t}
             </div>
           ))}
         </motion.div>
-        <motion.a href="#projects"
-          style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", padding: "0.7rem 1.6rem", background: "transparent", border: "1px solid rgba(0,221,240,0.3)", color: "#00ddff", fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", cursor: "pointer" }}
-          initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          whileHover={{ borderColor: "#00ddff", boxShadow: "0 0 20px rgba(0,221,240,0.15)" }}>
-          View Work
-          <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}>→</motion.span>
-        </motion.a>
+        <motion.div style={{ display: "flex", gap: "0.8rem", flexWrap: "wrap" }}
+          initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.a href="#projects"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.7rem 1.6rem", background: "#00ddff", color: "#04080f", fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", cursor: "pointer", fontWeight: 600 }}
+            whileHover={{ boxShadow: "0 0 24px rgba(0,221,240,0.4)", y: -2 }}>
+            View Projects →
+          </motion.a>
+          <motion.a href="#contact"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.7rem 1.6rem", background: "transparent", border: "1px solid rgba(0,221,240,0.3)", color: "#00ddff", fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", cursor: "pointer" }}
+            whileHover={{ borderColor: "#00ddff", boxShadow: "0 0 20px rgba(0,221,240,0.15)", y: -2 }}>
+            Contact Me
+          </motion.a>
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}

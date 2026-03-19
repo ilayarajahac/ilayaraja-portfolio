@@ -52,7 +52,12 @@ export default function ProjectsSection() {
                 )}
               </div>
 
-              <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.82rem", color: "#8494ae", lineHeight: 1.9, marginBottom: "1.8rem", maxWidth: 700 }}>{project.description}</p>
+              <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.78rem", color: "#00ddff", lineHeight: 1.7, marginBottom: "0.8rem", maxWidth: 700 }}>
+                <span style={{ color: "#3a5060" }}>Problem: </span>{project.problem}
+              </p>
+              <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.82rem", color: "#8494ae", lineHeight: 1.9, marginBottom: "1.8rem", maxWidth: 700 }}>
+                <span style={{ color: "#3a5060" }}>Solution: </span>{project.description}
+              </p>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "1.8rem" }}>
                 <div>
@@ -75,18 +80,22 @@ export default function ProjectsSection() {
                 </div>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1.2rem", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1.2rem", borderTop: "1px solid rgba(255,255,255,0.05)", flexWrap: "wrap", gap: "0.8rem" }}>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.72rem", color: "#8494ae" }}>
                   <span style={{ color: "#3a5060" }}>Impact: </span>{project.impact}
                 </div>
-                {project.link && (
-                  <a href={project.link} target="_blank" rel="noopener noreferrer"
-                    style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", color: "#00ddff", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", border: "1px solid rgba(0,221,240,0.3)", padding: "0.5rem 1.2rem", transition: "box-shadow 0.2s" }}
-                    onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 20px rgba(0,221,240,0.15)")}
-                    onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}>
-                    View Live →
+                <div style={{ display: "flex", gap: "0.6rem" }}>
+                  <a href={project.github} target="_blank" rel="noopener noreferrer"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", color: "#7c6fff", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", border: "1px solid rgba(124,111,255,0.3)", padding: "0.5rem 1.2rem" }}>
+                    GitHub
                   </a>
-                )}
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", color: "#00ddff", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", border: "1px solid rgba(0,221,240,0.3)", padding: "0.5rem 1.2rem" }}>
+                      Live Demo →
+                    </a>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}

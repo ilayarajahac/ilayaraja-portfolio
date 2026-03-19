@@ -26,7 +26,7 @@ export default function ContactSection() {
             Let's Build{" "}<span style={{ WebkitTextStroke: "1.5px #00ddff", color: "transparent" }}>Something Together</span>
           </h2>
           <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.82rem", color: "#8494ae", lineHeight: 1.9, maxWidth: 520, margin: "0 auto" }}>
-            Open to new opportunities, interesting projects, or business software needs.
+            Open to opportunities and freelance work. Let's build something useful together.
           </p>
         </motion.div>
 
