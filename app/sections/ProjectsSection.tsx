@@ -1,7 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { portfolioData } from "../data/portfolio"
+import { useState } from "react"
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 28 },
@@ -9,6 +10,13 @@ const fadeUp = {
 }
 
 export default function ProjectsSection() {
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null)
+
+  const openLightbox = (images: string[], index: number) => setLightbox({ images, index })
+  const closeLightbox = () => setLightbox(null)
+  const nextImage = () => lightbox && setLightbox({ ...lightbox, index: (lightbox.index + 1) % lightbox.images.length })
+  const prevImage = () => lightbox && setLightbox({ ...lightbox, index: (lightbox.index - 1 + lightbox.images.length) % lightbox.images.length })
+
   return (
     <section id="projects" style={{ background: "#07090f", borderTop: "1px solid rgba(255,255,255,0.05)", padding: "7rem 5rem", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "44px 44px", pointerEvents: "none" }} />
@@ -59,6 +67,30 @@ export default function ProjectsSection() {
                 <span style={{ color: "#3a5060" }}>Solution: </span>{project.description}
               </p>
 
+              {/* Project Images */}
+              {project.images && project.images.length > 0 && (
+                <div style={{ marginBottom: "1.8rem" }}>
+                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", color: "#3a5060", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1rem" }}>Screenshots</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+                    {project.images.map((img, i) => (
+                      <div key={i} style={{ position: "relative", overflow: "hidden", border: "1px solid rgba(0,221,240,0.15)", aspectRatio: "16/10", cursor: "pointer" }}
+                        onClick={() => openLightbox(project.images!, i)}>
+                        <img src={img} alt={`${project.title} screenshot ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }}
+                          onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
+                          onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")} />
+                        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0)", transition: "background 0.3s", display: "flex", alignItems: "center", justifyContent: "center" }}
+                          onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.3)")}
+                          onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0)")}>
+                          <span style={{ color: "#00ddff", fontSize: "0.7rem", fontFamily: "'DM Mono', monospace", opacity: 0, transition: "opacity 0.3s" }}
+                            onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+                            onMouseLeave={e => (e.currentTarget.style.opacity = "0")}>Click to view</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "1.8rem" }}>
                 <div>
                   <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", color: "#3a5060", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.8rem", paddingBottom: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>Key Features</div>
@@ -101,6 +133,72 @@ export default function ProjectsSection() {
           ))}
         </motion.div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeLightbox}
+            style={{
+              position: "fixed", inset: 0, zIndex: 9999,
+              background: "rgba(0,0,0,0.95)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer",
+            }}>
+            {/* Close button */}
+            <button onClick={closeLightbox} style={{
+              position: "absolute", top: "2rem", right: "2rem",
+              background: "rgba(0,221,240,0.1)", border: "1px solid rgba(0,221,240,0.3)",
+              color: "#00ddff", fontSize: "1.5rem", width: 48, height: 48,
+              cursor: "pointer", zIndex: 10001,
+            }}>×</button>
+
+            {/* Image counter */}
+            <div style={{
+              position: "absolute", top: "2rem", left: "50%", transform: "translateX(-50%)",
+              fontFamily: "'DM Mono', monospace", fontSize: "0.7rem", color: "#00ddff",
+              letterSpacing: "0.1em", zIndex: 10001,
+            }}>
+              {lightbox.index + 1} / {lightbox.images.length}
+            </div>
+
+            {/* Previous button */}
+            <button onClick={(e) => { e.stopPropagation(); prevImage() }} style={{
+              position: "absolute", left: "2rem", top: "50%", transform: "translateY(-50%)",
+              background: "rgba(0,221,240,0.1)", border: "1px solid rgba(0,221,240,0.3)",
+              color: "#00ddff", fontSize: "1.5rem", width: 48, height: 48,
+              cursor: "pointer", zIndex: 10001,
+            }}>‹</button>
+
+            {/* Next button */}
+            <button onClick={(e) => { e.stopPropagation(); nextImage() }} style={{
+              position: "absolute", right: "2rem", top: "50%", transform: "translateY(-50%)",
+              background: "rgba(0,221,240,0.1)", border: "1px solid rgba(0,221,240,0.3)",
+              color: "#00ddff", fontSize: "1.5rem", width: 48, height: 48,
+              cursor: "pointer", zIndex: 10001,
+            }}>›</button>
+
+            {/* Image with swipe animation */}
+            <motion.div
+              key={lightbox.index}
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -100, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                maxWidth: "90vw", maxHeight: "90vh",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+              <img src={lightbox.images[lightbox.index]} alt="Project screenshot"
+                style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", border: "2px solid rgba(0,221,240,0.3)" }} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <style>{`
         @media (max-width: 900px) {

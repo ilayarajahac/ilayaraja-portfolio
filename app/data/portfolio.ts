@@ -47,6 +47,16 @@ export const portfolioData = {
       timeline: "15 days",
       impact: "Streamlined agency workflow and client management",
       github: "https://github.com/ilayarajahac/agency",
+      images: [
+        "/images/agency/image1.png",
+        "/images/agency/image2.png",
+        "/images/agency/image3.png",
+        "/images/agency/image4.png",
+        "/images/agency/image5.png",
+        "/images/agency/image6.png",
+        "/images/agency/image7.png",
+        "/images/agency/image8.png",
+      ],
     },
     {
       id: 3,
